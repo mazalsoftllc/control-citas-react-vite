@@ -1,34 +1,79 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+{/**
+|--------------------------------------------------
+| Inicio importar componentes.
+|--------------------------------------------------
+*/}
 
-function App() {
-  const [count, setCount] = useState(0)
+{/**
+ * Hooks en React. 
+*/}
+import { useState } from "react";
 
-  return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+{/* Importar componentes. */}
+import Formulario from "./components/Formulario" 
+import Header from "./components/Header"
+import ListadoPacientes from "./components/ListadoPacientes"
+
+
+{/**
+|--------------------------------------------------
+| Fin importar componentes.
+|--------------------------------------------------
+*/}
+
+
+{/**
+|--------------------------------------------------
+| Inicio del componente App.
+|--------------------------------------------------
+*/}
+export default function App() {
+
+  {/**
+ * Hooks de entrada.
+ */}
+ const [coleccion_pacientes, setColeccionPacientes] = useState([]); 
+
+
+ {/**
+  * Hooks de proceso.
+  */}
+ 
+ 
+ 
+ {/**
+   * Hooks de salida.
+   */}
+
+
+  
+  {/* Retornar el componente App. */}
+  return (    
+    
+    <div className="container mx-auto mt-20">
+        <Header></Header>
+        <div   className="mt-12 flex">
+
+          <Formulario
+             
+              coleccion_pacientes={coleccion_pacientes}
+              setColeccionPacientes={setColeccionPacientes}
+                    
+          />
+          <ListadoPacientes
+             coleccion_pacientes={coleccion_pacientes}
+          />
+
+        </div>
+        
+    </div>   
+
   )
 }
 
-export default App
+{/**
+|--------------------------------------------------
+| Fin del componente App.
+|--------------------------------------------------
+*/}
+
