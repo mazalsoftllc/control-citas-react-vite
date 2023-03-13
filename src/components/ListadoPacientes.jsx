@@ -6,8 +6,9 @@ import Paciente from "./Paciente";
 /**
  *  Componente ListadoPacientes.
  */
-export default function ListadoPacientes({coleccion_pacientes}) {
-  
+export default function ListadoPacientes({coleccion_pacientes, setPaciente, eliminarPaciente}) {
+
+
 
    /**
     * Retornar el componente: ListadoPacientes.
@@ -19,7 +20,6 @@ export default function ListadoPacientes({coleccion_pacientes}) {
         {/* Descripción del formulario. */}
         <p className=" text-lg mt-5 text-center">
             {coleccion_pacientes && coleccion_pacientes.length ? "¡Si hay pacientes! " : "¡No hay pacientes! "}
-            <button className="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">Administrar</button>
         </p>
 
         {coleccion_pacientes.map((paciente) => {
@@ -29,15 +29,14 @@ export default function ListadoPacientes({coleccion_pacientes}) {
             <Paciente
                  key={paciente.id}
                  paciente={paciente}
+                 setPaciente={setPaciente}
+                 eliminarPaciente={eliminarPaciente}
             />
           )
         } )}
 
         {/* Presentación de la historia del paciente */}
-        
-        
-
-        
+            
         
     </div>
 

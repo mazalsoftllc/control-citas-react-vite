@@ -1,13 +1,30 @@
+{/* Importar componentes. */}
+import { useEffect, useState } from "react";
+import { Alert,Badge } from 'flowbite-react';
+
+
+
 {/**
 |--------------------------------------------------
 | Componente Paciente.
 |--------------------------------------------------
 */}
-export default function Paciente({paciente}) {
+export default function Paciente({paciente, setPaciente, eliminarPaciente}) {
 {/* Presentación de la mascota en formato historia social. */}
 
+{/* Comprobar el estado de carga del componente. */}
+useEffect(() => {
+  return () => {
+    console.log("¡El componente está listo!")
+  };
+}, []);
+
+
 {/* Desestructurar el registro para acceso rápido.*/}
-const {nombre_mascota, nombre_propietario, email_propietario, ubicacion_propietario, url_fotografia, fecha_ingreso, historia_mascota} = paciente
+const {nombre_mascota, nombre_propietario, email_propietario, ubicacion_propietario, url_fotografia, fecha_ingreso, historia_mascota, id} = paciente
+
+{/* Hook para controlar la visibilidad de la alerta para eliminar una historia. */}
+const [delete_alert, setDeleteAlert] = useState('invisible')
 
 
     {/**
@@ -18,9 +35,9 @@ const {nombre_mascota, nombre_propietario, email_propietario, ubicacion_propieta
     return (
 
         <main className="py-6 px-4 sm:p-6 md:py-10 md:px-8">
-    <div class="max-w-4xl mx-auto grid grid-cols-1 lg:max-w-5xl lg:gap-x-20 lg:grid-cols-2">
+    <div className="max-w-4xl mx-auto grid grid-cols-1 lg:max-w-5xl lg:gap-x-20 lg:grid-cols-2">
         <div className="relative p-3 col-start-1 row-start-1 flex flex-col-reverse rounded-lg bg-gradient-to-t from-black/75 via-black/0 sm:bg-none sm:row-start-2 sm:p-0 lg:row-start-1">
-            <h1 className="mt-1 text-lg font-semibold text-white sm:text-slate-900 md:text-2xl dark:sm:text-white">Medianoche</h1>
+            <h1 className="mt-1 text-lg font-semibold text-white sm:text-slate-900 md:text-2xl dark:sm:text-white">{nombre_mascota}</h1>
             <p className="text-sm leading-4 font-medium text-white sm:text-slate-500 dark:sm:text-slate-400">El responsable es: {nombre_propietario}</p>
         </div>
         <div className="grid gap-4 col-start-1 col-end-3 row-start-1 sm:mb-6 sm:grid-cols-4 lg:gap-6 lg:col-start-2 lg:row-end-6 lg:row-span-6 lg:mb-0">
@@ -31,16 +48,16 @@ const {nombre_mascota, nombre_propietario, email_propietario, ubicacion_propieta
         <dt className="sr-only">Reviews</dt>
         <dd className="text-indigo-600 flex items-center dark:text-indigo-400">
             <svg width="24" height="24" fill="none" aria-hidden="true" className="mr-1 stroke-current dark:stroke-indigo-500">
-                <path d="m12 5 2 5h5l-4 4 2.103 5L12 16l-5.103 3L9 14l-4-4h5l2-5Z"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="m12 5 2 5h5l-4 4 2.103 5L12 16l-5.103 3L9 14l-4-4h5l2-5Z"  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
              <span>4.89 <span className="text-slate-400 font-normal">(128)</span></span>
         </dd>
-        <dt class="sr-only">Ubicación</dt>
-        <dd class="flex items-center">
+        <dt className="sr-only">Ubicación</dt>
+        <dd className="flex items-center">
             <svg width="2" height="2" aria-hidden="true" fill="currentColor" className="mx-3 text-slate-300">
                 <circle cx="1" cy="1" r="1" />
             </svg>
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="mr-1 text-slate-400 dark:text-slate-500" aria-hidden="true">
+            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1 text-slate-400 dark:text-slate-500" aria-hidden="true">
                 <path d="M18 11.034C18 14.897 12 19 12 19s-6-4.103-6-7.966C6 7.655 8.819 5 12 5s6 2.655 6 6.034Z" />
                 <path d="M14 11a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
             </svg>
@@ -57,10 +74,28 @@ const {nombre_mascota, nombre_propietario, email_propietario, ubicacion_propieta
          <div>
             
             <dd className="text-indigo-600 flex items-center dark:text-indigo-400">
-                <img className="h-12 w-12" src="/images/edit.png" alt={"Editar el paciente: " + {nombre_mascota} }/>
-                <img className="h-12 w-12" src="/images/delete.png" alt={"Editar el paciente: " + {nombre_mascota} }/>
+                <img onClick={() => setDeleteAlert('visible')} className="h-12 w-12" src="/images/delete.png" alt={"Eliminar el paciente: " + {nombre_mascota} }/>
+                
             </dd>
+                        
+
         </div>
+
+        <Alert color="warning" className={delete_alert}>
+                 <span>
+                      <span className="font-medium">
+                         ¿Seguro que desea eliminar esta historia?
+                      </span>
+                         {' '}<Badge color="failure" onClick={() => eliminarPaciente(id)} className=" mt-3">
+                              ¡Eliminar!
+                         </Badge>
+                         <Badge color="success" onClick={() => setDeleteAlert('invisible')} className=" mt-1">
+                              ¡Cancelar!
+                         </Badge>
+                 </span>
+            </Alert>
+
+        
 
     </div>
   </main>

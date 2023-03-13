@@ -1,14 +1,13 @@
 {/* Importación de componentes */}
 import NotificacionExitosa from "./NotificacionExitosa";
 import NotificacionAlert from "./NotificacionAlert";
-
 {/**
  * Hooks en React. 
 */}
 import { useState, useEffect } from "react";
 
 
-function Formulario({coleccion_pacientes, setColeccionPacientes}) {
+function Formulario({coleccion_pacientes, setColeccionPacientes, paciente, setPaciente}) {
 
 
     {/**
@@ -21,6 +20,7 @@ function Formulario({coleccion_pacientes, setColeccionPacientes}) {
      const [url_fotografia, setUrlFotografia] = useState('')
      const [fecha_ingreso, setFechaIngreso] = useState('')
      const [historia_mascota, setHistoriaMascota] = useState('')
+     const [etiqueta_boton, setEtiquetaBoton] = useState('Guardar nuevo paciente')
      
      {/**
      * Hooks de proceso.
@@ -40,6 +40,33 @@ function Formulario({coleccion_pacientes, setColeccionPacientes}) {
      {/**
      * Hooks de salida.
      */}
+
+     {/* Controlar el proceso de carga en los hooks de entrada. */}
+     useEffect(() => {
+        
+        if(Object.keys(paciente).length  > 0) {
+
+          console.log("Sí hay pacientes.")
+          {/* Cargar el objeto paciente en el formulario. */}
+          setNombreMascota(paciente.nombre_mascota)
+          setNombrePropietario(paciente.nombre_propietario)
+          setEmailPropietario(paciente.email_propietario)
+          setUbicacionPropietario(paciente.ubicacion_propietario)
+          setUrlFotografia(paciente.url_fotografia)
+          setFechaIngreso(paciente.fecha_ingreso)
+          setHistoriaMascota(paciente.historia_mascota)
+
+          setEtiquetaBoton('Actualizar datos del paciente')
+          setError(false)
+
+        }else{
+          console.log("No hay pacientes.")
+        }
+
+      
+     }, [paciente] )
+
+    
 
      {/**
       * Controlar el envío de datos.
@@ -69,15 +96,36 @@ function Formulario({coleccion_pacientes, setColeccionPacientes}) {
           ubicacion_propietario, 
           url_fotografia, 
           fecha_ingreso, 
-          historia_mascota,
-          id: generarID()
+          historia_mascota
+          
         }
-
         {/* Mostrar tabla del objeto en la consola. */}
         console.table(registro_paciente)
 
-        {/* Agregar un nuevo registro a la colección de pacientes existente. */}
-        setColeccionPacientes([...coleccion_pacientes, registro_paciente])
+        {/* Identificar acción sobre el registro_paciente */}
+        if(paciente.id){
+
+          {/* El formulario está en modo de edición. */}
+          console.log("Editando la información del paciente.")
+          registro_paciente.id = paciente.id
+
+          {/* Actualizar el registro. */}
+          const pacientesActualizados = coleccion_pacientes.map(pacienteState => pacienteState.id === paciente.id? registro_paciente : pacienteState)
+          setColeccionPacientes(pacientesActualizados)
+
+          {/* Limpiar el objeto paciente por referencia de App.*/}
+          setPaciente({})
+        }
+        else{
+          {/* El formulario está en modo de registro. */}
+          console.log("Creando un nuevo registro.")
+          {/* Generar un nuevo id para el paciente. */}
+          registro_paciente.id = generarID()
+          {/* Agregar un nuevo registro a la colección de pacientes existente. */}
+          setColeccionPacientes([...coleccion_pacientes, registro_paciente])
+        }      
+
+
 
         {/* Limpiar el formulario. */}
         setNombreMascota('')
@@ -104,13 +152,16 @@ function Formulario({coleccion_pacientes, setColeccionPacientes}) {
     |--------------------------------------------------
     */}
     return (
-    <div className="md:w-1/2 lg:w-2/5">
+    <div className="md:w-1/2 lg:w-2/5  ">
+
+
+
+
         {/* Encabezado del formulario. */}
         <h2 className="font-black text-3xl text-center">Seguimiento de pacientes</h2>
         {/* Descripción del formulario. */}
         <p className=" text-lg mt-5 text-center">
           Agrega nuevos pacientes {''}
-          <button className="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">Administrar</button>
 
         </p>
         {/* Formulario para registrar un nuevo paciente. */}
@@ -308,11 +359,20 @@ function Formulario({coleccion_pacientes, setColeccionPacientes}) {
 
 
            {/**
-             * Acción #1 Guardar.
+             * Acción #1 Guardar o editar.
             */}
             <div className=" mb-5 text-center">
              
-            <button type="submit" className=" mt-5 cursor-poninter px-4 py-1 text-sm text-purple-400 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2">Guardar datos del paciente</button>
+            <button 
+              
+              type="submit" 
+              className=" mt-5 cursor-poninter px-4 py-1 text-sm text-purple-400 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"
+            >
+            {etiqueta_boton}               
+            </button>
+                
+         
+              
 
 
            </div>

@@ -10,7 +10,7 @@ export default function Header(){
             </div>
             <div>
                 <div className="text-xl font-medium text-black">Control de citas</div>
-                    <p className="text-slate-500">¡Bienvenid@ a la veterinaria!</p>
+                    <a className="text-slate-500" href="https://www.instagram.com/mauriciollc">Desarrollador: @mauriciollc</a>
             </div>
       </div>
         
